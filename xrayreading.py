@@ -6,7 +6,7 @@ from BeautifulSoup import Comment, BeautifulSoup
 
 # Modify valid_tags and valid_attrs for HTML whitelisting. Code by @palewire.
 def sanitize_html(value):
-    valid_tags = 'p i b'.split()
+    valid_tags = 'p i b a'.split()
     valid_attrs = ''.split()
     soup = BeautifulSoup(value)
     for comment in soup.findAll(
@@ -19,6 +19,10 @@ def sanitize_html(value):
                      if attr in valid_attrs]
     return soup.renderContents().decode('utf8').replace('javascript:', '')
 
+# Convert from b, i to span with title
+def italic_to_title(value):
+    soup = BeautifulSoup(value)
+    xraycomments = []
 
 # Ask the user for X-ray conversion
 filetoxray = raw_input('File to X-ray? ')
@@ -30,7 +34,10 @@ contents = open(filetoxray, 'r').read()
 sanitized = sanitize_html(contents)
 
 # Regex to remove empty paragraph tags
-done = re.sub("<p>\s*?&nbsp;\s*?</p>", "", sanitized)
+sanitized = re.sub('<p>\s*?&nbsp;\s*?</p>', '', sanitized)
+done = re.sub('<b>', '<span class="xray">', sanitized)
+
+italic_to_title(done)
 
 # Write the converted file and give user confirmation
 convertedfile = "xray-" + filetoxray
