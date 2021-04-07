@@ -2,7 +2,7 @@
 
 import re
 # Import BeautifulSoup for parsing HTML. Get via easy_install.
-from BeautifulSoup import Comment, BeautifulSoup
+import beautifulsoup4
 
 # Modify valid_tags and valid_attrs for HTML whitelisting. Code by @palewire.
 def sanitize_html(value):
@@ -25,7 +25,7 @@ def italic_to_title(value):
     xraycomments = []
 
 # Ask the user for X-ray conversion
-filetoxray = raw_input('File to X-ray? ')
+filetoxray = input('File to X-ray? ')
 
 # Read the file as a string
 contents = open(filetoxray, 'r').read()
@@ -44,4 +44,4 @@ convertedfile = "xray-" + filetoxray
 file = open(convertedfile, 'w')
 file.write(done)
 file.close()
-print "Converted file saved as: %s" % convertedfile
+print("Converted file saved as: %s" % convertedfile)
